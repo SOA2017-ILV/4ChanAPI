@@ -1,6 +1,6 @@
 # frozen_string_literal: false
 
-require_relative 'posts.rb'
+require_relative 'post.rb'
 
 module Load4Chan
   # Model for Repo
@@ -12,10 +12,6 @@ module Load4Chan
 
     def size
       @data[0]['replies'] # data[0] is the original post
-    end
-
-    def op
-      @op ||= post.new(@data[0])
     end
 
     def posts

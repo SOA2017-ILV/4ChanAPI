@@ -38,9 +38,11 @@ module Load4Chan
       motivation_threads.each { |tid| thread_urls << fit_chan_thread_path(tid) }
       thread_data = []
       thread_urls.each { |url| thread_data << call_thread_url(url) }
+      threads = []
       thread_data.map do |data|
-        Thread.new(data.parse['posts'], self)
+        threads << Thread.new(data.parse['posts'], self)
       end
+      threads
     end
 
     # private

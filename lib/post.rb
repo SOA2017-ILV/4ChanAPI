@@ -5,7 +5,7 @@
 
 module Load4Chan
   # Model for Repo
-  class Posts
+  class Post
     def initialize(post_data, thread_source)
       @post = post_data
       @thread_source = thread_source
