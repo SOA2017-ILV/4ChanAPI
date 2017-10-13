@@ -1,9 +1,9 @@
 # frozen_string_literal: false
 
 require 'http'
-#require_relative 'post.rb'
-#require_relative 'images.rb'
-#require_relative 'thread_data.rb'
+# require_relative 'post.rb'
+# require_relative 'images.rb'
+# require_relative 'thread_data.rb'
 
 module Load4Chan
   # Library for Github Web API
@@ -33,7 +33,7 @@ module Load4Chan
     #   contributors_data.map { |account_data| Contributor.new(account_data) }
     # end
 
-    # private
+    private
 
     def search_fat_thread_id
       catalog_data = call_fit_catalog.parse
@@ -48,7 +48,7 @@ module Load4Chan
       found_threads -= [nil, '']
     end
 
-    def call_fit_catalog()
+    def call_fit_catalog
       fit_catalog_url = 'https://a.4cdn.org/fit/catalog.json'
       response = call_thread_url(fit_catalog_url)
     end
