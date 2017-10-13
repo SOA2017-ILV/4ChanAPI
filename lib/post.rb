@@ -1,29 +1,30 @@
 # frozen_string_literal: false
 
-# require_relative 'images.rb' #not implimented
+#require_relative 'images.rb' #not implimented
+#require_relative 'threads.rb'
 
 module Load4Chan
   # Model for Repo
   class Posts
     def initialize(post_data, thread_source)
-      @post = repo_data
-      @data_source = data_source
+      @post = post_data
+      @thread_source = thread_source
     end
 
-    def size
-      @repo['size']
+    def post_number
+      @post['no']
     end
 
-    def owner
-      @owner ||= Contributor.new(@repo['owner'])
+    def subject
+      @post['sub']
     end
 
-    def git_url
-      @repo['git_url']
+    def comment
+      @post['com']
     end
 
-    def contributors
-      @contributors ||= @data_source.contributors(@repo['contributors_url'])
+    def image
+      # TBD
     end
   end
 end

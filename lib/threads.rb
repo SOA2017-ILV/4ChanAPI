@@ -1,30 +1,25 @@
 # frozen_string_literal: false
-# https://a.4cdn.org/fit/thread/43183258.json
 
-# require_relative 'posts.rb'
+require_relative 'posts.rb'
 
-module RepoPraise
+module Load4Chan
   # Model for Repo
-  class Repo
-    def initialize(repo_data, data_source)
-      @repo = repo_data
+  class Thread
+    def initialize(thread_data, data_source)
+      @data = thread_data
       @data_source = data_source
     end
 
     def size
-      @repo['size']
+      @data[0]['replies'] # data[0] is the original post
     end
 
-    def owner
-      @owner ||= Contributor.new(@repo['owner'])
+    def op
+      @op ||= post.new(@data[0])
     end
 
-    def git_url
-      @repo['git_url']
-    end
-
-    def contributors
-      @contributors ||= @data_source.contributors(@repo['contributors_url'])
+    def posts
+      @data.map { |thread_post| Post.new(thread_post, self) }
     end
   end
 end

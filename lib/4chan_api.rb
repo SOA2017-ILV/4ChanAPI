@@ -1,9 +1,9 @@
 # frozen_string_literal: false
 
 require 'http'
-# require_relative 'post.rb'
+require_relative 'post.rb'
 # require_relative 'images.rb'
-# require_relative 'thread_data.rb'
+require_relative 'threads.rb'
 
 module Load4Chan
   # Library for Github Web API
@@ -32,8 +32,18 @@ module Load4Chan
     #   contributors_data = call_gh_url(contributors_url).parse
     #   contributors_data.map { |account_data| Contributor.new(account_data) }
     # end
+    def threads
+      motivation_threads = search_fat_thread_id
+      thread_urls = []
+      motivation_threads.each { |tid| thread_urls << fit_chan_thread_path(tid) }
+      thread_data = []
+      thread_urls.each { |url| thread_data << call_thread_url(url) }
+      thread_data.map do |data|
+        Thread.new(data.parse['posts'], self)
+      end
+    end
 
-    private
+    # private
 
     def search_fat_thread_id
       catalog_data = call_fit_catalog.parse
@@ -42,7 +52,7 @@ module Load4Chan
         page['threads'].map do |op_post|
           title = op_post['com']
           thread_id = op_post['no'] if title.to_s.include? '/fat/ '
-          found_threads << thread_id
+          found_threads << thread_id.to_s
         end
       end
       found_threads -= [nil, '']
@@ -51,10 +61,11 @@ module Load4Chan
     def call_fit_catalog
       fit_catalog_url = 'https://a.4cdn.org/fit/catalog.json'
       response = call_thread_url(fit_catalog_url)
+      response
     end
 
     def fit_chan_thread_path(thread_id)
-      'https://a.4cdn.org/fit/thread/' + thread_id
+      'https://a.4cdn.org/fit/thread/' + thread_id + '.json'
     end
 
     def call_thread_url(url)
